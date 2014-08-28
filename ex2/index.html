@@ -1,0 +1,71 @@
+<html>
+<head>
+<script src="lib/jquery-2.1.1.min.js"></script>
+
+<style>
+form {
+    width: 50%;
+    margin: 0 auto 0 auto;
+    padding: 20px;
+    background-color: #ddd;
+}
+</style>
+</head>
+
+<body>
+<form>
+<label for="in">Input:</label>
+<input type="text" id="in" name="in" value="5 17 - 52 8 9 6 7 * + - + *">
+<button id="calc">Calculate</button>
+<div id="result"></div>
+</form>
+</body>
+
+<script>
+$(document).ready(function() {
+    $('form').on('click','#calc',function(){
+        var input = $('#in').val();
+        var tokens = input.split(' ');
+        var escape = 0
+        do {
+            escape++;
+            if (escape > 100) {
+                return false;
+            }
+            var stack = [];
+            console.log(tokens);
+            for (var i = 0; i < tokens.length; i++) {
+                var token = tokens[i];
+                if (token == '+') {
+                    var num2 = parseFloat(stack.pop());
+                    var num1 = parseFloat(stack.pop());
+                    stack.push(num1 + num2 + '');
+                } else if (token == '-') {
+                    var num2 = parseFloat(stack.pop());
+                    var num1 = parseFloat(stack.pop());
+                    stack.push(num1 - num2 + '');
+                } else if (token == '*') {
+                    var num2 = parseFloat(stack.pop());
+                    var num1 = parseFloat(stack.pop());
+                    stack.push(num1 * num2 + '');
+                } else if (token == '/') {
+                    var num2 = parseFloat(stack.pop());
+                    var num1 = parseFloat(stack.pop());
+                    stack.push(num1 / num2 + '');
+                } else {
+                    // Assume it's a number
+                    stack.push(token + '');
+                }
+            }
+            tokens = stack;
+            
+        } while (stack.length > 1);
+        
+        $('#result').html('Result: ' + stack[0]);
+        
+        return false;
+    });
+    
+});
+</script>
+</html>
