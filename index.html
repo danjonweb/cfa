@@ -1,0 +1,147 @@
+<html>
+<head>
+<script src="lib/jquery-2.1.1.min.js"></script>
+
+<style>
+body {
+    font-family: sans-serif;
+    line-height: 1.3;
+    color: #333;
+    padding: 0;
+    margin: 0;
+}
+#cities {
+    width: 700px;
+    margin: 0 auto 0 auto;
+    background-color: #D6CEC3;
+    padding: 10px 0 10px 0;
+}
+h1 {
+    text-align: center;
+}
+.day {
+    padding: 10px 10px 10px 50px;
+    width: 50%;
+    margin: 0 auto 20px auto;
+    border: 1px dotted #333;
+}
+.label {
+    font-weight: bold;
+}
+
+@media (max-width: 700px) {
+    #cities {
+        width: 100%;
+    }
+    .day {
+        width: 80%;
+    }
+}
+</style>
+</head>
+<body>
+
+
+<div id="cities"></div>
+
+</body>
+
+<script>
+$(document).ready(function() {
+    $.get("weather.txt", function(data) {
+        var lines = data.split('\n');
+        var lastCity = '';
+        var cities = {};
+        for (var i = 0; i < lines.length; i++) {
+            var line = lines[i];
+            
+            var tempString = 'temperature:';
+            var weatherString = 'weather:';
+            var windString = 'wind chill:';
+            var precipString = 'chance precipitation:';
+            
+            var tempPos = line.indexOf(tempString);
+            var weatherPos = line.indexOf(weatherString);
+            var windPos = line.indexOf(windString);
+            var precipPos = line.indexOf(precipString);
+            
+            var cityName;
+            var key, val;
+            
+            if (tempPos != -1) {
+                // This is a temperature line
+                cityName = line.substring(0, tempPos-1);
+                key = 'temp';
+                val = line.substring(tempPos+tempString.length+1);
+            }
+            if (weatherPos != -1) {
+                // This is a weather line
+                cityName = line.substring(0, weatherPos-1);
+                key = 'weather';
+                val = line.substring(weatherPos+weatherString.length+1);
+            }
+            if (windPos != -1) {
+                // This is a wind line
+                cityName = line.substring(0, windPos-1);
+                key = 'wind';
+                val = line.substring(windPos+windString.length+1);
+            }
+            if (precipPos != -1) {
+                // This is a precipitation line
+                cityName = line.substring(0, precipPos-1);
+                key = 'precipitation';
+                val = line.substring(precipPos+precipString.length+1);
+            }
+            
+            if (cityName != lastCity) {
+                var City = {};
+                City.name = cityName;
+                City[key] = val;
+                
+                // Data for each city is stored as an array. Each new day is a new element of the array for that city.
+                if (cities[cityName] == null) {
+                    // If data for this city doesn't exist, add it as the first element of an array.
+                    cities[cityName] = [City];
+                } else {
+                    // Otherwise, push it onto the existing array for this city.
+                    cities[cityName].push(City);
+                }
+                
+                lastCity = cityName;
+            } else {
+                var cityArray = cities[cityName];
+                var City = cityArray[cityArray.length-1];
+                City[key] = val;
+            }
+        }
+        
+        for (var cityName in cities) {
+           if (cities.hasOwnProperty(cityName)) {
+               var cityArray = cities[cityName];
+               $('#cities').append('<h1>' + cityName + '</h1>');
+               
+               for (var j = 0; j < cityArray.length; j++) {
+                   var dayDiv = $('<div class="day"></div');
+                   dayDiv.append('<div><span class="label">Temperature:</span> ' + cityArray[j].temp + '</div>');
+                   dayDiv.append('<div><span class="label">Weather:</span> ' + cityArray[j].weather + '</div>');
+                   dayDiv.append('<div><span class="label">Wind Chill:</span> ' + cityArray[j].wind + '</div>');
+                   dayDiv.append('<div><span class="label">Precipitation:</span> ' + cityArray[j].precipitation + '</div>');
+                   
+                   if (cityArray[j].weather == 'Mostly Cloudy') {
+                       dayDiv.css('background', 'url(img/weather_clouds.png) no-repeat 10px center')
+                   } else if (cityArray[j].weather == 'Partly Cloudy') {
+                       dayDiv.css('background', 'url(img/weather_cloudy.png) no-repeat 10px center')
+                   } else if (cityArray[j].weather == 'Clear') {
+                       dayDiv.css('background', 'url(img/weather_sun.png) no-repeat 10px center')
+                   }
+                   
+                   $('#cities').append(dayDiv);
+               }
+               
+           }
+        }
+    });
+    
+});
+</script>
+</html>

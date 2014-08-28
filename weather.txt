@@ -1,0 +1,36 @@
+San Francisco temperature: 66.6
+San Francisco weather: Mostly Cloudy
+San Francisco wind chill: 0.0
+San Francisco chance precipitation: 10
+Oakland temperature: 69.1
+Oakland weather: Mostly Cloudy
+Oakland wind chill: 0.0
+Oakland chance precipitation: 0
+San Jose temperature: 80.4
+San Jose weather: Clear
+San Jose wind chill: 0
+San Jose chance precipitation: 0
+San Francisco temperature: 64.0
+San Francisco weather: Partly Cloudy
+San Francisco wind chill: 0.0
+San Francisco chance precipitation: 0
+Oakland temperature: 64.0
+Oakland weather: Partly Cloudy
+Oakland wind chill: 0.0
+Oakland chance precipitation: 0
+San Jose temperature: 72.0
+San Jose weather: Partly Cloudy
+San Jose wind chill: 0
+San Jose chance precipitation: 0
+San Francisco temperature: 63.5
+San Francisco weather: Partly Cloudy
+San Francisco wind chill: 0.0
+San Francisco chance precipitation: 10
+Oakland temperature: 64.0
+Oakland weather: Partly Cloudy
+Oakland wind chill: 0.0
+Oakland chance precipitation: 10
+San Jose temperature: 69.5
+San Jose weather: Partly Cloudy
+San Jose wind chill: 0
+San Jose chance precipitation: 10
